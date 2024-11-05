@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+
+    <title>Student Performance Dashboard</title>
+    <style>
+      body {
+    font-family: Arial, sans-serif;
+    background: #fff;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden; /* Prevent horizontal scroll */
+}
+
+.notification-icon, .search-icon, .account-icon {
+    font-size: 24px; /* Icon size */
+    margin-left: 15px; /* Space between icons */
+    cursor: pointer; /* Change cursor to pointer on hover */
+	color: black;
+}
+
+.notification-dropdown {
+    display: none; /* Initially hidden */
+    position: absolute; /* Positioning the dropdown */
+    top: 50px; /* Position below the notification icon */
+    right: 10px; /* Align with the notification icon */
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 10px;
+    z-index: 1; /* Ensure dropdown is above other content */
+}
+.notification-dropdown p{
+	color: black;
+}
+
+.search-bar {
+    display: none; /* Initially hidden */
+    position: absolute; /* Positioning the search bar */
+    top: 0px; /* Position below the search icon */
+    right: 110px; /* Space from the right edge */
+}
+
+.search-bar input {
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+ .student-info-tab {
+           position: fixed;
+    top: 50px; /* Adjust this value to move it vertically */
+    right: 0; /* Aligns the tab to the right side */
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    display: none; /* Initially hidden */
+    border-radius: 0;
+        }
+
+        .student-info-tab p {
+            margin: 10px 0;
+        }
+
+        .student-info-tab strong {
+            display: block;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .student-info-tab span {
+            font-size: 16px;
+            color: #555;
+        }
+		.header-right {
+    display: flex;
+    align-items: center;
+    position: relative;
+margin-right: 40px;	
+}
+.logout-button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #ff4d4d;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    text-transform: uppercase;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+}
+
+.logout-button:hover {
+    background-color: #ff3333;
+}
+.apple {
+            background-color: #2c3e50;
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+        .orange {
+            max-width: 1200px; /* Container width */
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .banana {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+			margin-left: 50px;
+			margin-right: 50px;
+			margin-top: 20px;
+			
+			
+        }
+        .mango {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+            width: 23%; /* Ensure 4 per row */
+			height: 130px;
+            margin-bottom: 20px;
+            text-align: center;
+            padding: 20px;
+            position: relative;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .mango:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .mango h3 {
+            margin: 0;
+            font-size: 18px;
+            color: #2c3e50;
+        }
+        .mango p {
+            color: #7f8c8d;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+        .mango .fa-fa {
+            font-size: 20px;
+            color: #2c3e50;
+            transition: transform 0.2s ease;
+        }
+        .mango:hover .fa-fa {
+            transform: translateY(-10px);
+        }
+        .mango .arrow {
+            display: none;
+            position: absolute;
+            right: 20px;
+            bottom: 20px;
+            font-size: 16px;
+            color: #000000;
+        }
+        .mango:hover .arrow {
+            display: inline-block;
+        }
+        .mango:after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 5px;
+            background-color: transparent;
+            transition: background-color 0.2s ease;
+        }
+        .mango:hover:after {
+            background-color: #88ab8e;
+        }
+		header {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			padding: 10px 20px; /* Adjust as needed */
+			background-color: #fff;
+			border-bottom: 2px solid #E7EAE5;
+			position: fixed;
+			width: 100%; /* Full width */
+			height: 40px;
+			top: 0;
+			left: 0; /* Start from the left corner */
+			z-index: 1000; /* Ensure header stays on top */
+		}
+
+		.header-logo img {
+			height: 40px; /* Adjust as needed for a smaller header */
+			margin-left: 60px;
+		}
+
+		.header-icons {
+					display: flex;
+					align-items: center;
+					padding: 10px; /* Adjust as needed */
+					margin-right: 15px;
+				}
+
+				.header-icons .icon {
+					margin-left: 20px; /* Space between icons */
+					text-decoration: none;
+					color: #333;
+					font-size: 24px; /* Larger size for visibility */
+					transition: color 0.3s; /* Smooth color transition */
+				}
+
+				.header-icons .icon:hover {
+					color: #88AB8E; /* Change color on hover */
+				}
+
+		.sidebar {
+			width: 200px;
+			background: #fff;
+			height: calc(100vh - 60px); /* Full height minus header height */
+			border-right: 2px solid #EDEADE;
+			position: fixed;
+			top: 50px; /* Start below the header */
+			left: 0;
+			color: #000000;
+			padding: 20px;
+			z-index: 900; /* Ensure it’s below the header */
+		}
+
+		.sidebar h2 {
+			color: rgb(64, 86, 109);
+		}
+
+		.sidebar ul {
+			list-style-type: none;
+			padding: 0;
+		}
+
+		.sidebar ul li {
+			padding: 15px 0;
+			border-bottom: 0px solid #000000;
+		}
+
+		.sidebar ul li a {
+			color: rgb(64, 86, 109);
+			text-decoration: none;
+		}
+
+		.main-content {
+    background: #FFF;
+    margin-left: 260px; /* Offset for the sidebar */
+    margin-top: 20px; /* Offset for the header */
+    padding: 20px;
+    overflow: auto;
+}
+
+        .header1 {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+		.right {
+            display: flex;
+			flex-direction: column;
+			margin-left: 0px;
+            padding: 10px;
+            justify-content: left;
+			width: 30%;
+            
+        }
+		
+        .header h1 {
+            margin: 0;
+			color: #000000;
+        }
+        .cards {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+			text-align: center;
+        }
+        .card {
+            background-color: linear-gradient(to bottom, #DBE9F4, #DBE9F4, #F8F4FF);
+            padding: 5px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            width: 30%;
+			text-align: center;
+        }
+        .card h3 {
+            margin: 0 0 10px 0;
+        }
+        .chart-container {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-around;
+        }
+        .chart-box {
+            width: 45%;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+			
+        }
+         .notification-bar {
+            background-color: #fff;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+            margin-bottom: 20px;
+			margin-left: 200px;
+			justify-content: right;
+     
+            
+        }
+		.container {
+			background: #fff;
+			text-align: center;
+			padding: 0px;
+			border-radius: 8px;
+			box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+			
+			display: flex;
+			flex-direction: column; /* Ensures child elements stack vertically */
+			gap: 10px; /* Adds space between child elements */
+			height: 35%; /* Make container take full height */
+			width: 70%; /* Make container take full width */
+		}
+		
+
+			/* Optional: Parent container can be a block element to stack children */
+			.parent-container {
+				display: block; /* This ensures that children are stacked vertically */
+				width: 100%; /* Adjust as needed */
+			}
+
+		.sidebar {
+            width: 240px;
+            background-color: #fff;
+            color: #ecf0f1;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+        .sidebar a {
+            color: #E7EAE5;
+            text-decoration: none;
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .sidebar a:hover {
+            background-color: #E7EAE5;
+        }
+		 #chartContainer {
+        width: 300px;
+        height: 400px;
+    }
+		/*teachers attendance*/
+		/* Style the container */
+		.container {
+			width: 100%;
+			margin: 0 auto;
+			max-width: 800px;
+			align-items: center;
+			margin-top: 10px;
+		}
+        .containerclass
+		{
+		align-items: center;
+		 width: 30%;
+		 height: 50px;
+		 border-radius: 9px;
+		}
+		/* Style the form */
+		.attendance-form {
+			
+			 
+			 width: 300px;
+		}
+
+		/* Style for the student list wrapper to make it scrollable if needed */
+		.student-list-wrapper {
+			max-height: 400px;
+			
+			overflow-y: auto;
+			border: 1px solid #ddd;
+			padding: 10px;
+		}
+
+		/* Style the student list */
+		.student-list {
+			width: 100%;
+			list-style-type: none;
+			padding: 0;
+			margin: 0;
+		}
+
+		/* Each student item should be in a single line */
+		.student-item {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			padding: 10px;
+			border-bottom: 1px solid #ddd;
+		}
+
+		/* Style for student name */
+		.student-name {
+			flex: 2;
+		}
+
+		/* Style for present/absent radio buttons */
+		label {
+			flex: 1;
+			margin-left: 10px;
+		}
+
+		/* Add some basic styling to the form and buttons */
+		button {
+			margin-top: 20px;
+			padding: 10px 20px;
+			background-color: #4CAF50;
+			color: white;
+			border: none;
+			border-radius: 5px;
+			cursor: pointer;
+		}
+
+		button:hover {
+			background-color: #45a049;
+		}
+
+.student-list-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .student-item {
+            position: relative;
+            width: 100px;
+            height: 120px; /* Increased height for icon and name */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .student-icon {
+            font-size: 60px;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .student-name {
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .attendance-options {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            display: none;
+            background-color: white;
+            border: 1px solid #ddd;
+            padding: 10px;
+            width: 150px; /* Adjusted width for options */
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            z-index: 10;
+        }
+
+        .attendance-options label {
+            display: block;
+            cursor: pointer;
+        }
+
+        .marked-present {
+            color: green;
+        }
+
+        .marked-absent {
+            color: red;
+        }
+
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+   <header>
+        <div class="header-logo">
+            <a href="teachers.html"><img src="images/logo.png" alt="Academy Header Logo"></a>
+        </div>
+        <div class="header-right">
+                <i class="fas fa-search search-icon" onclick="toggleSearch()"></i>
+                <div class="search-bar" id="searchBar">
+                    <input type="text" id="searchInput" placeholder="Search..." onkeyup="filterFrames()">
+                </div>
+                <i class="fas fa-bell notification-icon" onclick="toggleNotification()"></i>
+                <div class="notification-dropdown" id="notificationDropdown">
+                    <p>No new notifications.</p> <!-- Placeholder for notifications -->
+                </div>
+                  <i class="fas fa-user-circle account-icon" onclick="toggleStudentInfoTab(event)"></i> <!-- Account icon --> <!-- Account icon -->
+            </div>
+    </header>
+	
+	
+	<!-- Hidden login tab -->
+<div id="loginTab" class="login-tab">
+    <h3>Account Information</h3>
+    <div class="user-info">
+        <p><strong>Student Name:</strong> John Doe</p>
+        <p><strong>Email:</strong> johndoe@example.com</p>
+    </div>
+    <button id="logoutButton">Logout</button>
+</div>
+    <div class="nav-wrap">                                
+				<nav id="mainnav" class="mainnav">
+					<div class="sidebar">
+						
+						<h2>Your Academy Name</h2>
+						<ul>
+							<li><a href="teachers_student_info.html">Student Information</a></li>
+							<li><a href="not_applicable.html">Bus tracking</a></li>
+							<li><a href="teachers_academic_performance.html">Academic Performance</a></li>
+							<li><a href="teachers_attendance_record.html">Attendance records</a></li>
+							<li><a href="teachers_timetable.html">Time Table</a></li>
+							<li><a href="teachers_homework_and_assignments.html">Homework and Assignments</a></li>
+							<li><a href="teachers_photos_sharing.html">Photos sharing</a></li>
+							<li><a href="teachers_resources.html">Resources</a></li>
+							<li><a href="teachers_behavioral_reports.html">Behavioral reports</a></li>
+							<li><a href="teachers_parentteachers_messaging.html">parents teacher messaging</a></li>
+							<li><a href="not_applicable.html">Fee structure</a></li>
+							<li><a href="not_applicable.html">Feedback Status</a></li>
+						</ul>
+					</div>
+				</nav><!-- /.mainnav -->  
+    </div><!-- /.nav-wrap -->
+	<div id="student-info-tab" class="student-info-tab">
+            <div class="student-info-container">
+                <h2>Student Information</h2>
+                <p><strong>Name:</strong> <span id="student-name">John Doe</span></p>
+                <p><strong>Gender:</strong> <span id="student-gender">Male</span></p>
+                <p><strong>Class:</strong> <span id="student-class">10</span></p>
+                <p><strong>Section:</strong> <span id="student-section">A</span></p>
+                <p><strong>School:</strong> <span id="student-school">ABC High School</span></p>
+                <p><strong>Class Teacher:</strong> <span id="class-teacher">Mrs. Smith</span></p>
+				<button id="logout-button" class="logout-button">Log Out</button>
+            </div>
+        </div>
+    
+	<div class="main-content">
+	          <div class="container">
+        <h2>Select Class and Section</h2>
+
+        <label for="classSelect">Class:</label>
+        <select id="classSelect">
+            <option value="" disabled selected>Select Class</option>
+            <option value="Class 1">Class 1</option>
+            <option value="Class 2">Class 2</option>
+            <option value="Class 3">Class 3</option>
+        </select>
+
+        <label for="sectionSelect">Section:</label>
+        <select id="sectionSelect">
+            <option value="" disabled selected>Select Section</option>
+            <option value="Section A">Section A</option>
+            <option value="Section B">Section B</option>
+            <option value="Section C">Section C</option>
+        </select>
+
+        <button id="loadStudentsButton" disabled>Load Students</button>
+
+        <div id="attendanceMessage" class="message">
+            <form id="attendanceForm" class="attendance-form">
+                <h3>Student List</h3>
+                <div class="student-list-wrapper" id="studentList">
+                    <!-- Student items will be inserted here -->
+                </div>
+                <button type="submit" id="submitAttendance">Submit Attendance</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Enable the "Load Students" button once both Class and Section are selected
+        document.getElementById('classSelect').addEventListener('change', checkSelections);
+        document.getElementById('sectionSelect').addEventListener('change', checkSelections);
+
+        function checkSelections() {
+            const classValue = document.getElementById('classSelect').value;
+            const sectionValue = document.getElementById('sectionSelect').value;
+            const loadStudentsButton = document.getElementById('loadStudentsButton');
+            loadStudentsButton.disabled = !(classValue && sectionValue); // Enable button only if both are selected
+        }
+
+        // Mock student data
+        const mockStudents = [
+            { name: "John Doe", icon: "fas fa-user-circle" },
+            { name: "Jane Smith", icon: "fas fa-user-circle" },
+            { name: "Alex Johnson", icon: "fas fa-user-circle" }
+        ];
+
+        // Load mock students on button click
+        document.getElementById('loadStudentsButton').addEventListener('click', function() {
+            const studentListElement = document.getElementById('studentList');
+            studentListElement.innerHTML = ''; // Clear existing list
+
+            mockStudents.forEach((student, index) => {
+                const listItem = document.createElement('div');
+                listItem.classList.add('student-item');
+                listItem.innerHTML = `
+                    <i class="${student.icon} student-icon"></i>
+                    <div class="student-name">${student.name}</div>
+                    <div class="attendance-options" id="options-${index}">
+                        <label><input type="radio" name="leave_${index}" value="informed_leave"> Informed Leave</label>
+                        <label><input type="radio" name="leave_${index}" value="uninformed_leave"> Uninformed Leave</label>
+                    </div>
+                `;
+                studentListElement.appendChild(listItem);
+
+                const studentIcon = listItem.querySelector('.student-icon');
+                const attendanceOptions = listItem.querySelector(`#options-${index}`);
+                const hiddenInput = document.createElement('input');
+                hiddenInput.type = 'hidden';
+                hiddenInput.name = `attendance_${index}`;
+                listItem.appendChild(hiddenInput);
+
+                // Single tap: Mark as present
+                studentIcon.addEventListener('click', function () {
+                    if (!attendanceOptions.style.display || attendanceOptions.style.display === 'none') {
+                        hiddenInput.value = 'present';
+                        studentIcon.classList.add('marked-present');
+                        studentIcon.classList.remove('marked-absent');
+                        attendanceOptions.style.display = 'none'; // Hide options
+                    }
+                });
+
+                // Double tap: Show leave options
+                let tapTimer;
+                studentIcon.addEventListener('touchstart', function () {
+                    if (tapTimer) {
+                        clearTimeout(tapTimer);
+                        tapTimer = null;
+                        // Double-tap detected
+                        hiddenInput.value = 'leave';
+                        attendanceOptions.style.display = 'block'; // Show options
+                        studentIcon.classList.remove('marked-present');
+                        studentIcon.classList.remove('marked-absent');
+                    } else {
+                        tapTimer = setTimeout(function () {
+                            tapTimer = null; // Reset timer
+                        }, 300); // Delay for detecting double tap
+                    }
+                });
+
+                // Handle leave options
+                attendanceOptions.addEventListener('change', function (e) {
+                    const selectedOption = e.target.value;
+                    if (selectedOption) {
+                        studentIcon.classList.add('marked-absent');
+                        studentIcon.classList.remove('marked-present');
+                        attendanceOptions.style.display = 'none'; // Hide options
+                    }
+                });
+            });
+        });
+
+        // Submit attendance form
+        document.getElementById('attendanceForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+            const data = {};
+            formData.forEach((value, key) => {
+                data[key] = value;
+            });
+
+            // Send data to backend (mock example)
+            console.log('Submitting attendance:', data);
+            alert('Attendance submitted successfully!');
+        });
+    </script>
+</body>
+</html>

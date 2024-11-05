@@ -1,0 +1,26 @@
+{
+  "expo": {
+    "extra": {
+      "eas": {
+        "projectId": "fce86aa8-788a-4db4-b708-0e4611875450"
+      }
+    },
+    "android": {
+      "package": "com.meenakumari.school",
+      "permissions": [
+        "CAMERA",
+        "WRITE_EXTERNAL_STORAGE",
+        "READ_EXTERNAL_STORAGE",
+        "READ_MEDIA_IMAGES"
+      ]
+    },
+    "ios": {
+      "bundleIdentifier": "com.meenakumari.school",
+      "infoPlist": {
+        "NSPhotoLibraryUsageDescription": "This app requires access to your photo library to upload images.",
+        "NSCameraUsageDescription": "This app requires access to your camera.",
+        "NSMicrophoneUsageDescription": "This app requires access to your microphone."
+      }
+    }
+  }
+}

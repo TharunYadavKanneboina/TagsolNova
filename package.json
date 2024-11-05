@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "@react-navigation/native": "^6.1.18",
+    "@react-navigation/stack": "^6.4.1",
+    "install": "^0.13.0",
+    "npm": "^10.8.3",
+    "react-native-image-picker": "^7.1.2"
+  }
+}
